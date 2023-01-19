@@ -4,7 +4,7 @@ import { generateDatesRange } from "../utils/generate-dates-range";
 
 const weekDays = ["D", "S", "T", "Q", "Q", "S", "S"];
 const summaryDates = generateDatesRange();
-const minSummarySize = 52 * 7 + 1; // 52 Semanas
+const minSummarySize = 10 * 7 + 1; // 52 Semanas
 const amountOfDays = minSummarySize - summaryDates.length;
 
 const Tracker = () => {
@@ -23,12 +23,17 @@ const Tracker = () => {
 
       <div className="grid grid-rows-7 grid-flow-col gap-3">
         {summaryDates.map((date) => (
-          <HabitDay active key={date.toString()} />
+          <HabitDay
+            amount={10}
+            completed={Math.round(Math.random() * 10)}
+            active
+            key={date.toString()}
+          />
         ))}
 
         {amountOfDays > 0 &&
           Array.from({ length: amountOfDays }).map((_, index) => (
-            <HabitDay key={index} />
+            <HabitDay amount={0} completed={1} key={index} />
           ))}
       </div>
     </div>
