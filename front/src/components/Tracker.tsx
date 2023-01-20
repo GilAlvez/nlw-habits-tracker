@@ -1,13 +1,42 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import HabitDay from "./HabitDay";
 import { generateDatesRange } from "../utils/generate-dates-range";
+import { api } from "../libs/axios";
+import dayjs from "dayjs";
 
 const weekDays = ["D", "S", "T", "Q", "Q", "S", "S"];
 const summaryDates = generateDatesRange();
 const minSummarySize = 10 * 7 + 1; // 52 Semanas
 const amountOfDays = minSummarySize - summaryDates.length;
 
+interface Summary {
+  id: string;
+  date: string;
+  completed: number;
+  amount: number;
+}
+
 const Tracker = () => {
+  const [summary, setSummary] = useState<Summary[]>([]);
+
+  useEffect(() => {
+    api
+      .get("/summary")
+      .then((res) => {
+        console.log(res.data);
+        setSummary(res.data);
+      })
+      .catch((err) => {
+        console.log(err.response.data);
+      });
+  }, []);
+
+  const handleSummaryDates = (day: Date) => {
+    return summary.find((summaryDay) =>
+      dayjs(day).isSame(summaryDay.date, "day")
+    );
+  };
+
   return (
     <div className="flex">
       <div className="grid grid-rows-7 grid-flow-row gap-3">
@@ -24,10 +53,11 @@ const Tracker = () => {
       <div className="grid grid-rows-7 grid-flow-col gap-3">
         {summaryDates.map((date) => (
           <HabitDay
-            amount={10}
-            completed={Math.round(Math.random() * 10)}
-            active
             key={date.toString()}
+            amount={handleSummaryDates(date)?.amount}
+            completed={handleSummaryDates(date)?.completed}
+            date={date}
+            active
           />
         ))}
 
