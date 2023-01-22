@@ -10,6 +10,7 @@ import colors from "tailwindcss/colors";
 interface CheckboxProps extends TouchableOpacityProps {
   label: string;
   checked?: boolean;
+  disabled: boolean;
 }
 
 export const Checkbox = ({
