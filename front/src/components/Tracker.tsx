@@ -51,19 +51,20 @@ const Tracker = () => {
       </div>
 
       <div className="grid grid-rows-7 grid-flow-col gap-3">
-        {summaryDates.map((date) => (
-          <HabitDay
-            key={date.toString()}
-            amount={handleSummaryDates(date)?.amount}
-            completed={handleSummaryDates(date)?.completed}
-            date={date}
-            active
-          />
-        ))}
+        {summary.length > 0 &&
+          summaryDates.map((date) => (
+            <HabitDay
+              key={date.toString()}
+              amount={handleSummaryDates(date)?.amount}
+              defaultCompleted={handleSummaryDates(date)?.completed}
+              date={date}
+              active
+            />
+          ))}
 
         {amountOfDays > 0 &&
           Array.from({ length: amountOfDays }).map((_, index) => (
-            <HabitDay amount={0} completed={1} key={index} />
+            <HabitDay amount={0} defaultCompleted={1} key={index} />
           ))}
       </div>
     </div>
